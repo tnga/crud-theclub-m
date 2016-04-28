@@ -176,7 +176,7 @@ function initWebSocket() {
 		socket.onopen = function(msg) { 
 			
 			console.log("Connected - status "+this.readyState); 
-			Materialize.toast('ws-connexion established', 5000) ;
+			Materialize.toast('ws-connection established', 5000) ;
 		};
 		socket.onmessage = function(msg) { 
 			
@@ -211,7 +211,7 @@ function initWebSocket() {
 					/*@NOTE Because this is just a test project,
 					 * instructions below haven't be optimized.
 					 * Indeed, `comfirmMZone.ref` can change before receive an answer
-					 * from the server if connexion is slow; 
+					 * from the server if connection is slow; 
 					 * Then wrong profile will be remove here from the table.
 					 @TODO try to better perform this. 
 					 * it can be fix by using an intermediate variable to stock `id` of
@@ -241,7 +241,7 @@ function initWebSocket() {
 	}
 	catch(ex){ 
 		console.log(ex);
-		Materialize.toast('can\'t init connexion to websocket server', 10000, "red") ; 
+		Materialize.toast('can\'t init connection to websocket server', 10000, "red") ; 
 	}
 }
 
