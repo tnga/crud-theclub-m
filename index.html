@@ -1,0 +1,194 @@
+<!doctype html>
+
+<html>
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="CRUD operations example with usage of websocket" />
+    <meta name="author" content="Tindo Ngoufo Arsel" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <title>the club members</title>
+    
+    <!--Import Google Icon Font--
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <!--<link rel="stylesheet" href="bower_components/Materialize/dist/css/materialize.css" />-->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/iconfont/material-icons.css" />
+  </head>
+  
+  <body>
+    
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper" id="main-menu">
+          <a href="#" class="brand-logo left">the club M</a>
+          <ul id="nav-mobile" class="right">
+            <li>
+              <form>
+                <div class="input-field">
+                  <input id="search" type="search" required>
+                  <label for="search"><i class="material-icons">search</i></label>
+                  <i class="material-icons">close</i>
+                </div>
+              </form>
+            </li>
+            <!-- Dropdown Trigger -->
+			<li><a class="dropdown-button" data-activates="main-option"><i class="material-icons">more_vert</i></a></li>
+				<!-- Dropdown Structure -->
+				<ul id="main-option" class="dropdown-content">
+				  <li v-on:click='addProfile()'><a>add member</a></li>
+				  <li class="divider"></li>
+				  <li><a>older</a></li>
+				  <li><a>recent</a></li>
+				</ul>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    
+    <div id="member-zone">
+		<div class="row">
+			
+			<div v-for="user in users" class="col s6 m4 l3">
+				<figure class="card">
+				  <div class="card-image waves-effect waves-block waves-light">
+					  <img class="activator" v-bind:src="'images/'+ user['avatar'] +'.png'">
+				  </div>
+				  <div class="card-content">
+					  <span class="card-title activator grey-text text-darken-4">{{ user["pseudo"] }}<i class="material-icons right">more_vert</i></span>
+					  <p><span>{{user.status}}</span></p>
+				  </div>
+				  <figcaption class="card-reveal">
+					<span class="card-title grey-text text-darken-4">{{ user["pseudo"] }}<i class="material-icons right">close</i></span>
+					<p class="user-info">
+						<span>first name</span>
+						<span>{{ user["first_name"] }}</span>
+						<span>last name</span>
+						<span>{{ user["last_name"] }}</span>
+						<span>id card</span>
+						<span>{{ user["id_card"] }}</span>
+						<span>email</span>
+						<span>{{ user["mail"] }}</span>
+					</p>
+					<div class="fixed-action-btn">
+						<a v-on:click='editProfile( user["id"] )' class="btn-floating waves-effect waves-light">
+						  <i class="material-icons">mode_edit</i>
+						</a>
+						___
+						<a v-on:click='stepDeleteProfile( user["id"] )' class="btn-floating red waves-effect waves-light">
+						  <i class="material-icons">delete</i>
+						</a>
+					</div>
+				  </figcaption>
+				</figure>
+			</div>
+			
+		</div>
+    </div>
+
+	  <!-- Modal Structure -->
+	  <div id="modal-edit-profile" class="modal modal-fixed-footer">
+		<div class="modal-content">
+		  <h4>member info</h4>
+		  <div class="row">
+			<form class="col s12">
+			  <div class="row">
+				<div class="input-field col m6">
+				  <input id="first_name" type="text" required v-model='profile["first_name"]' class="validate">
+				  <label class="active" for="first_name">First Name</label>
+				</div>
+				<div class="input-field col m6">
+				  <input id="last_name" type="text" required v-model='profile["last_name"]' class="validate">
+				  <label class="active" for="last_name">Last Name</label>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="input-field col m6">
+				  <input id="pseudo" type="text" required v-model='profile["pseudo"]' class="validate">
+				  <label class="active" for="pseudo">Pseudo</label>
+				</div>
+				<div class="input-field col m6">
+				  <select id="avatar" v-select='profile["avatar"]' class="icons">
+					  <option value="" disabled selected>choose avatar</option>
+					  <option value="avatar15" data-icon="images/avatar15.png" class="circle">avatar15</option>
+					  <option value="avatar0" data-icon="images/avatar0.png" class="circle">avatar0</option>
+					  <option value="avatar1" data-icon="images/avatar1.png" class="circle">avatar1</option>
+					  <option value="avatar2" data-icon="images/avatar2.png" class="circle">avatar2</option>
+					  <option value="avatar3" data-icon="images/avatar3.png" class="circle">avatar3</option>
+					  <option value="avatar4" data-icon="images/avatar4.png" class="circle">avatar4</option>
+					  <option value="avatar5" data-icon="images/avatar5.png" class="circle">avatar5</option>
+					  <option value="avatar6" data-icon="images/avatar6.png" class="circle">avatar6</option>
+					  <option value="avatar7" data-icon="images/avatar7.png" class="circle">avatar7</option>
+					  <option value="avatar8" data-icon="images/avatar8.png" class="circle">avatar8</option>
+					  <option value="avatar9" data-icon="images/avatar9.png" class="circle">avatar9</option>
+					  <option value="avatar10" data-icon="images/avatar10.png" class="circle">avatar10</option>
+					  <option value="avatar11" data-icon="images/avatar11.png" class="circle">avatar11</option>
+					  <option value="avatar12" data-icon="images/avatar12.png" class="circle">avatar12</option>
+					  <option value="avatar13" data-icon="images/avatar13.png" class="circle">avatar13</option>
+					  <option value="avatar14" data-icon="images/avatar14.png" class="circle">avatar14</option>
+				  </select>
+				  <label class="active" for="avatar">Avatar</label>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="input-field col m6">
+				  <select id="status" v-select='profile["status"]'>
+					  <option value="" disabled selected>choose status</option>
+					  <option value="admin">administrator</option>
+					  <option value="gold member">gold member</option>
+					  <option value="silver member">silver member</option>
+					  <option selected value="member">member</option>
+				  </select>
+				  <label class="active" for="status">Status</label>
+				</div>
+				<div class="input-field col m6">
+				  <input id="birth" type="date" required v-model='profile["birthday"]' class="datepicker">
+				  <label class="active" for="birth">Birthday</label>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="input-field col m6">
+				  <input id="idcard" type="number" required v-model='profile["id_card"]' class="validate">
+				  <label class="active" for="idcard">ID Card</label>
+				</div>
+				<div class="input-field col m6">
+				  <input id="email" type="email" required v-model='profile["mail"]' class="validate">
+				  <label class="active" for="email">Email</label>
+				</div>
+				<div class="input-field col s12">
+				  <input id="phone" type="tel" required v-model='profile["phone"]' class="validate">
+				  <label class="active" for="phone">Phone</label>
+				</div>
+			  </div>
+			</form>
+		  </div>
+		</div>
+		<div class="modal-footer">
+		  <a v-on:click='updateProfile()' class="modal-action waves-effect waves-green btn-flat ">Process</a>
+		  <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+		</div>
+	  </div>
+	  
+	  <!-- Modal Structure -->
+	  <div id="modal-confirm-op" class="modal">
+		<div class="modal-content">
+		  <h4>Confirm operation</h4>
+		  <p v-bind:class="alertStyle">{{message}}</p>
+		</div>
+		<div class="modal-footer">
+		  <a v-on:click='deleteProfile()' class="modal-action waves-effect waves-green btn-flat ">Process</a>
+		  <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+		</div>
+	  </div>
+          
+
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/Materialize/dist/js/materialize.js"></script>
+    <script src="bower_components/vue/dist/vue.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+  
+</html>

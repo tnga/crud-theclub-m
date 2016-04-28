@@ -1,0 +1,121 @@
+@charset "UTF-8";
+
+/*$sass-lib-path: "../bower_components/Materialize/sass" */
+
+$bower-lib-path: "../bower_components/Materialize" ;
+
+// Mixins
+// @import "components/prefixer";
+@import "components/mixins";
+@import "components/color";
+
+// Variables;
+@import "components/variables";
+
+$roboto-font-path: "#{$bower-lib-path}/fonts/roboto/" ;
+   
+// Reset
+@import "components/normalize";
+
+// components
+@import "components/global";
+@import "components/icons-material-design";
+@import "components/grid";
+@import "components/navbar";
+@import "components/roboto";
+@import "components/typography";
+@import "components/cards";
+@import "components/toast";
+//@import "components/tabs";
+//@import "components/tooltip";
+@import "components/buttons";
+@import "components/dropdown";
+@import "components/waves";
+@import "components/modal";
+//@import "components/collapsible";
+//@import "components/chips";
+//@import "components/materialbox";
+@import "components/forms/forms";
+//@import "components/table_of_contents";
+//@import "components/sideNav";
+//@import "components/preloader";
+//@import "components/slider";
+//@import "components/carousel";
+@import "components/date_picker/default";
+@import "components/date_picker/default.date";
+//@import "components/date_picker/default.time";
+
+
+$vendor-color: color("green", "darken-1") !default ;
+$light-color: white ;
+$dark-color: #3d3d3d ;
+
+.nav-wrapper {
+
+	@extend .green.darken-1
+} 
+
+#nav-mobile #search {
+  
+  width: 50px ;
+  
+  &:focus {
+    
+    width: 300px ;
+    
+    @media (max-width: 640px) {
+
+      width: 220px ;
+    }
+  }
+}
+
+#member-zone {
+	padding: 20px ;
+	
+	.col.s6 {
+		@media (max-width: 460px) {
+			
+			width: 100%;
+		}
+	}
+	
+	figure.card {
+		max-width: 220px ;
+		margin: 0px auto 20px auto;
+		
+		&:hover {
+			@extend .z-depth-2 ;
+		}
+        
+        >.card-image {
+		     min-height: 150px ;
+            max-height: 200px ;
+            background-color: $dark-color ;
+        }
+        
+        figcaption {
+            
+           .user-info {
+                
+                >span {
+                    display: block ;
+                }
+                >span:nth-child(odd) {
+                    font-size: 0.9em ;
+                    border-bottom: 1px solid lighten( $dark-color, 45%) ;
+                    color: $dark-color ;
+                }
+                >span:nth-child(even) {
+                    text-align: right;
+                }
+            }
+            
+            .fixed-action-btn {
+            
+				bottom: 10px; 
+				right: 20px;
+			}
+        }
+    }
+}
