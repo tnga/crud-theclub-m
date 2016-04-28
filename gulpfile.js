@@ -7,7 +7,7 @@
  * autoprefixe and generate sourcemap when needed.
  * minifications.
  *===================================================================================================================
- * @license LGPL v2.1 or later
+ * @license MIT
  * @author  [Tindo Ngoufo Arsel](mailto:devtnga@gmail.com)
  *         
  * project: the club members (just for CRUD operations example with usage of websocket).
