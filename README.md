@@ -1,6 +1,8 @@
 ## The club Members
 >This is just a simple test project i create to perform CRUD operation through websocket API.
 
+![screenshot](screenhot.png)
+
 The project need **php** as server script language and **node.js** for building tasks.
 
 #### how to deploy
@@ -11,13 +13,13 @@ These assume that you have **php** and **mysql** installed on your system.
  - start the *websocket server*  by running this command, assuming your are in *service* directory of the project: 
  
     ```sh
-    ~ws_crud_test/service$ php main.php 
+    ~/service$ php main.php 
     ```
     
     if you use **xampp** and you haven't allready add it *bin* directory in the `$PATH` environment, for example on GNU/Linux `/opt/lampp/bin`, use this command instead:
     	
     ```sh
-    ~ws_crud_test/service$ /opt/lampp/bin/php main.php 
+    ~/service$ /opt/lampp/bin/php main.php 
     ```
     
  - launch the project through index page in your browser
@@ -36,7 +38,7 @@ These assume that you have **node.js**, **npm** and **ruby-sass** installed on y
  - to automate build tasks, run this on the main project directory :
  
     ```sh
-    ~ws_crud_test/$ gulp 
+    ~/$ gulp 
     ```
     
     available task are *auto watching*, *preprocessor compilation*, ... Take it a look of `./gulpfile.js` for more informations.
