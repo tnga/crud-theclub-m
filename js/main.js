@@ -1,4 +1,4 @@
-/*fix for binding materialize-select value issues*/
+/*fix for vue-binding materialize-select value issues*/
 Vue.directive("select", {
     "twoWay": true,
 
@@ -28,24 +28,32 @@ var clubMZone = new Vue({
 	data: {
 		
 		users: null  //all members infos
-		//profile: null //for operations on the profile of a target member
 	},
 	methods: {
 		
 		editProfile: function (userID) {
 			
-			var i = 0 ;
-			while (this.users[i]["id"] !== userID) i++;
-			profileMZone.profile = this.users[i] ;
-			profileMZone.operation = "update" ;
-			$('#modal-edit-profile').openModal();
+			if (userID && userID != -1) { //prevent unset member id
+				
+				var i = 0 ;
+				while (this.users[i]["id"] !== userID) i++;
+				profileMZone.profile = this.users[i] ; //init user infos to be edit
+				profileMZone.operation = "update" ;
+				
+				$('#modal-edit-profile').openModal();
+			}
+			else {
+				Materialize.toast('can\'t process, need page to be refresh', 5000, 'red') ;
+			}
+			
 		} ,
 		stepDeleteProfile: function (userID) {
 			
 			if (userID && userID != -1) { //prevent unset member id
 				
-				comfirmMZone.ref = userID ;
+				comfirmMZone.ref = userID ; //refer futur removed user with it id
 				comfirmMZone.message = "do you really want delete this member ? This can't be undo !" ;
+				
 				$('#modal-confirm-op').openModal();
 			}
 			else {
@@ -90,6 +98,7 @@ var profileMZone = new Vue({
 				try { 
 					socket.send( JSON.stringify( crudQuery ) ); 
 					console.log('Sent for '+ this.operation +': '+ JSON.stringify( crudQuery )); 
+					
 					$('#modal-edit-profile').closeModal();
 				} 
 				catch(ex) { 
@@ -108,17 +117,18 @@ var comfirmMZone = new Vue({
 		
 		ref: "" , //reference with which operation will be process (egg: user-id to delete)
 		message: "" , 
-		alertStyle: "red-text"
+		alertStyle: "red-text" //set with materialize class
 	},
 	methods: {
 		
 		deleteProfile: function () {
 			
 			crudQuery.op = "delete";
-			crudQuery.data = this.ref ;
+			crudQuery.data = this.ref ; //futur removed member is target by it `id` provide here by `ref`
 			try { 
 				socket.send( JSON.stringify( crudQuery ) ); 
 				console.log('Sent for delete:'+ JSON.stringify( crudQuery )); 
+				
 				$('#modal-confirm-op').closeModal();
 			} 
 			catch(ex) { 
@@ -139,8 +149,9 @@ var navMZone = new Vue({
 		
 		addProfile: function () {
 			
-			profileMZone.profile = {} ;
+			profileMZone.profile = {} ; //init new member profile
 			profileMZone.operation = "create" ;
+			
 			$('#modal-edit-profile').openModal();
 		}
 	}
@@ -149,7 +160,7 @@ var navMZone = new Vue({
 
 var crudQuery = {
 		op: "" , //operation type
-		data: [] //json data to send,
+		data: [] //json data to send, or string (`id` of a member in case of delete operation)
 	};
 var crudAnswer = null;
 var socket = null;
@@ -184,6 +195,7 @@ function initWebSocket() {
 					*/
 					profileMZone.profile["id"] = -1 ; //mark unknow member id
 					clubMZone.users.unshift( profileMZone.profile ) ;
+					
 					Materialize.toast('profile created', 5000) ;
 				}
 				else Materialize.toast('creating profile error', 5000, "red") ;
@@ -201,6 +213,9 @@ function initWebSocket() {
 					 * Indeed, `comfirmMZone.ref` can change before receive an answer
 					 * from the server if connexion is slow; 
 					 * Then wrong profile will be remove here from the table.
+					 @TODO try to better perform this. 
+					 * it can be fix by using an intermediate variable to stock `id` of
+					 * removed member instead of directly use `comfirmMZone.ref`.
 					*/
 					var i = 0 ;
 					while (clubMZone.users[i]["id"] !== comfirmMZone.ref) i++;
@@ -214,6 +229,9 @@ function initWebSocket() {
 				clubMZone.users = crudAnswer ;  
 				console.log(clubMZone.users); 
 			}
+			
+			//print performed operation in conosole
+			if (crudAnswer["op"] && crudAnswer["status"]) console.log("profile "+ crudAnswer["op"] +": "+ crudAnswer["status"]) ;
 		};
 		socket.onclose   = function(msg) { 
 			
@@ -245,7 +263,6 @@ $(document).ready(function() {
 	
 	initWebSocket() ;
 	
-	//$('#modal-edit-profile').openModal();
     $('select').material_select();
     $('.datepicker').pickadate({
 		selectMonths: true, // Creates a dropdown to control month
