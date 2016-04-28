@@ -1,7 +1,7 @@
 ## The club Members
 >This is just a simple test project i create to perform CRUD operation through websocket API.
 
-![screenshot](screenhot.png)
+![screenshot](screenshot.png)
 
 The project need **php** as server script language and **node.js** for building tasks.
 
